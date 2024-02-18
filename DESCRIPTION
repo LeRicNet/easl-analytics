@@ -1,9 +1,9 @@
-Package: easl-analytics
+Package: easlanalytics
 Type: Package
 Title: What the Package Does (Title Case)
 Version: 0.1.0
 Author: Eric Prince
-Maintainer: Eric.Prince@CUAnschutz.edu
+Maintainer: <Eric.Prince@CUAnschutz.edu>
 Description: Companion Analytics Software for EASL
 License: What license is it under?
 Encoding: UTF-8
