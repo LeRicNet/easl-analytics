@@ -1,3 +1,3 @@
 test <- function(x) {
-  return(99)
+  return(x*99)
 }
