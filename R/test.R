@@ -1,4 +1,4 @@
+# Testing function for API calls
 test <- function(x) {
-  x <- as.numeric(x)
-  return(x*99)
+  return(jsonlite::toJSON(user_responses))
 }

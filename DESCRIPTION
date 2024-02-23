@@ -12,6 +12,7 @@ Imports:
     cowplot,
     dplyr,
     ggplot2,
+    jsonlite,
     magrittr,
     pheatmap,
     readr,
@@ -19,3 +20,5 @@ Imports:
     tidyr,
     xml2
 RoxygenNote: 7.3.1
+Depends: 
+    R (>= 2.10)
