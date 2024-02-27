@@ -1,3 +1,60 @@
+plotSelectionHeatmapByPatient <- function(patient = NULL, ai_enabled = TRUE) {
+  if (is.null(patient) & ai_enabled == TRUE) {
+    plist <- lapply(unique(user_responses$currentPatient), function(patient) {
+      bind_rows(user_responses, ai_responses, ai_groundtruth) %>%
+        mutate(grp = ifelse(grepl('AI', sessionID), sessionID, 'User')) %>%
+        filter(currentPatient == patient) %>%
+        select(sessionID,grp, tumor_location:pcf_involvement) %>%
+        melt(id.vars = c('sessionID', 'grp')) %>%
+        ggplot(aes(variable, sessionID, fill=value)) +
+        geom_tile(col='white') +
+        coord_flip() +
+        theme_linedraw(base_size=14) +
+        theme(axis.ticks.x = element_blank(),
+              axis.text.x = element_blank(),
+              axis.title.x = element_blank(),
+              legend.position = 'none') +
+        labs(
+          title = patient,
+          x = 'ATPC Profile feature'
+        ) +
+        facet_wrap(~grp, nrow=1, scales = 'free_x', strip.position = 'bottom')
+    })
+
+    ai_enabled <- cowplot::plot_grid(
+      plotlist=plist[c(1,2,4,6,8,10)]
+    )
+
+    ai_disabled <- cowplot::plot_grid(
+      plotlist=plist[c(3,5,7,9)]
+    )
+
+    return(cowplot::plot_grid(ai_enabled, ai_disabled, ncol = 1, labels = c('AI enabled', 'AI disabled')))
+  } else if (!is.null(patient)) {
+    bind_rows(user_responses, ai_responses, ai_groundtruth) %>%
+      mutate(grp = ifelse(grepl('AI', sessionID), sessionID, 'User')) %>%
+      filter(currentPatient == patient) %>%
+      select(sessionID, grp, tumor_location:pcf_involvement) %>%
+      melt(id.vars = c('sessionID', 'grp')) %>%
+      ggplot(aes(variable, sessionID, fill=value)) +
+      geom_tile(col='white') +
+      coord_flip() +
+      theme_linedraw(base_size=14) +
+      theme(axis.ticks.x = element_blank(),
+            axis.text.x = element_blank(),
+            axis.title.x = element_blank(),
+            legend.position = 'none') +
+      labs(
+        title = patient,
+        x = 'ATPC Profile feature'
+      ) +
+      facet_wrap(~grp, nrow=1, scales = 'free_x', strip.position = 'bottom')
+  }
+}
+
+
+
+
 plotSelectionsHeatmap <- function(session_df) {
   trials_df <- getTrialsDataFrame(session_df = session_df)
   return(
@@ -12,7 +69,6 @@ plotSelectionsHeatmap <- function(session_df) {
       main = 'selections (n) per feature and trial'
       )
   )
-
 }
 
 getTrialsSchedule <- function(session_df, return.list=F) {
