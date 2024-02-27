@@ -1,3 +1,17 @@
+#' Plot Selection Heatmap By Patient
+#'
+#' This function generates a selection heatmap for a given patient or for all patients if no specific patient is provided.
+#' The heatmap represents the ATPC profile features for each session ID. The function uses the `ggplot2` and `cowplot` packages for plotting.
+#'
+#' @param patient (Optional) The patient for whom the heatmap is to be plotted. If not provided, the function will plot heatmaps for all unique patients in the `user_responses` data frame.
+#' @param ai_enabled (Optional) A boolean flag indicating whether AI is enabled or not. If set to TRUE (default), the function will plot separate heatmaps for when AI is enabled and disabled.
+#'
+#' @return A `ggplot` object representing the heatmap(s).
+#'
+#' @examples
+#' plotSelectionHeatmapByPatient(patient = "John Doe", ai_enabled = TRUE)
+#'
+#' @export
 plotSelectionHeatmapByPatient <- function(patient = NULL, ai_enabled = TRUE) {
   if (is.null(patient) & ai_enabled == TRUE) {
     plist <- lapply(unique(user_responses$currentPatient), function(patient) {
@@ -51,9 +65,6 @@ plotSelectionHeatmapByPatient <- function(patient = NULL, ai_enabled = TRUE) {
       facet_wrap(~grp, nrow=1, scales = 'free_x', strip.position = 'bottom')
   }
 }
-
-
-
 
 plotSelectionsHeatmap <- function(session_df) {
   trials_df <- getTrialsDataFrame(session_df = session_df)
