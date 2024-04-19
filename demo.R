@@ -15,10 +15,11 @@ plotNumeracyVsTrialDuration(sessions, metric = 'mean')
 plotNumeracyVsTrialDuration(sessions, metric = 'var')
 
 # Session Barcode
-lapply(sessions, plotSessionBarcode)
+cowplot::plot_grid(plotlist=lapply(sessions, plotSessionBarcode))
 plotTrialDurationPerUser(sessions)
 
 # Selection Heatmap
+cowplot::plot_grid(plotlist=lapply(sessions, plotSelectionsHeatmap))
 plotSelectionsHeatmap(sessions[[3]])
 
 # Inter-Rater Reliability: this is wrong; this is a plot of the agreement of
@@ -130,7 +131,7 @@ lapply(sessions, plotSelectionsHeatmap)
 cowplot::plot_grid(plotlist = plist)
 plotSelectionsHeatmap(sessions[[3]])
 
-calculateNumeracy(session_df)
+calculateNumeracy(sessions[[2]])
 
 trials
 
