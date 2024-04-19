@@ -1,4 +1,4 @@
-plotSessionBarcode <- function(session_df) {
+plotSessionBarcode <- function(session_df = sessions[[1]]) {
   return(
     session_df %>%
       tidyr::drop_na() %>%
