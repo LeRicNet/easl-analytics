@@ -4,7 +4,7 @@ plotSessionBarcode <- function(session_df) {
       tidyr::drop_na() %>%
       ggplot2::ggplot(ggplot2::aes(timestamp, eventCategory, fill=eventCategory)) +
       ggplot2::geom_tile() +
-      ggplot2::theme_bw(base_size=20) +
+      ggplot2::theme_bw(base_size=12) +
       ggplot2::theme(
         axis.text.x = ggplot2::element_blank(),
         axis.ticks.x = ggplot2::element_blank(),
@@ -56,11 +56,11 @@ plotNumeracyOverview <- function(sessions) {
   return(
     dplyr::bind_rows(lapply(sessions, calculateNumeracy)) %>%
       dplyr::mutate(id=factor(1:nrow(.))) %>%
-      reshape2::melt(id.vars = 'id') %>%
+      reshape2::melt(id.vars = c('session', 'id')) %>%
       ggplot2::ggplot(aes(variable, value)) +
       ggplot2::geom_boxplot() +
-      ggplot2::geom_point(aes(col=id), size=5) +
-      ggplot2::geom_line(aes(group=id, col=id)) +
+      # ggplot2::geom_point(aes(col=id), size=5) +
+      # ggplot2::geom_line(aes(group=id, col=id)) +
       ggplot2::ylim(c(0,6)) +
       ggplot2::xlab('subjective numeracy score') +
       ggplot2::theme_linedraw(base_size=14) +

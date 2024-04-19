@@ -66,8 +66,13 @@ plotSelectionHeatmapByPatient <- function(patient = NULL, ai_enabled = TRUE) {
   }
 }
 
-plotSelectionsHeatmap <- function(session_df) {
+plotSelectionsHeatmap <- function(session_df, filename = NA, height = NA, width = NA) {
   trials_df <- getTrialsDataFrame(session_df = session_df)
+  # Define the color range
+  colors <- colorRampPalette(c("gray", "white", "black"))(255)
+
+  # Set breaks for the color scale
+  breaks <- c(1, 4)
   return(
     pheatmap::pheatmap(
       trials_df,
@@ -77,7 +82,13 @@ plotSelectionsHeatmap <- function(session_df) {
       number_format = '%.f',
       fontsize_number = 14,
       legend = F,
-      main = 'selections (n) per feature and trial'
+      main = 'selections (n) per feature and trial',
+      color = colorRampPalette(rev(RColorBrewer::brewer.pal(n = 3, name =
+                                                "RdYlBu")))(3),
+      breaks = c(-1, 0:4),
+      filename = filename,
+      height = height,
+      width = width
       )
   )
 }
