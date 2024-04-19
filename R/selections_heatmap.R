@@ -1,5 +1,78 @@
-plotSelectionsHeatmap <- function(session_df) {
+#' Plot Selection Heatmap By Patient
+#'
+#' This function generates a selection heatmap for a given patient or for all patients if no specific patient is provided.
+#' The heatmap represents the ATPC profile features for each session ID. The function uses the `ggplot2` and `cowplot` packages for plotting.
+#'
+#' @param patient (Optional) The patient for whom the heatmap is to be plotted. If not provided, the function will plot heatmaps for all unique patients in the `user_responses` data frame.
+#' @param ai_enabled (Optional) A boolean flag indicating whether AI is enabled or not. If set to TRUE (default), the function will plot separate heatmaps for when AI is enabled and disabled.
+#'
+#' @return A `ggplot` object representing the heatmap(s).
+#'
+#' @examples
+#' plotSelectionHeatmapByPatient(patient = "John Doe", ai_enabled = TRUE)
+#'
+#' @export
+plotSelectionHeatmapByPatient <- function(patient = NULL, ai_enabled = TRUE) {
+  if (is.null(patient) & ai_enabled == TRUE) {
+    plist <- lapply(unique(user_responses$currentPatient), function(patient) {
+      bind_rows(user_responses, ai_responses, ai_groundtruth) %>%
+        mutate(grp = ifelse(grepl('AI', sessionID), sessionID, 'User')) %>%
+        filter(currentPatient == patient) %>%
+        select(sessionID,grp, tumor_location:pcf_involvement) %>%
+        melt(id.vars = c('sessionID', 'grp')) %>%
+        ggplot(aes(variable, sessionID, fill=value)) +
+        geom_tile(col='white') +
+        coord_flip() +
+        theme_linedraw(base_size=14) +
+        theme(axis.ticks.x = element_blank(),
+              axis.text.x = element_blank(),
+              axis.title.x = element_blank(),
+              legend.position = 'none') +
+        labs(
+          title = patient,
+          x = 'ATPC Profile feature'
+        ) +
+        facet_wrap(~grp, nrow=1, scales = 'free_x', strip.position = 'bottom')
+    })
+
+    ai_enabled <- cowplot::plot_grid(
+      plotlist=plist[c(1,2,4,6,8,10)]
+    )
+
+    ai_disabled <- cowplot::plot_grid(
+      plotlist=plist[c(3,5,7,9)]
+    )
+
+    return(cowplot::plot_grid(ai_enabled, ai_disabled, ncol = 1, labels = c('AI enabled', 'AI disabled')))
+  } else if (!is.null(patient)) {
+    bind_rows(user_responses, ai_responses, ai_groundtruth) %>%
+      mutate(grp = ifelse(grepl('AI', sessionID), sessionID, 'User')) %>%
+      filter(currentPatient == patient) %>%
+      select(sessionID, grp, tumor_location:pcf_involvement) %>%
+      melt(id.vars = c('sessionID', 'grp')) %>%
+      ggplot(aes(variable, sessionID, fill=value)) +
+      geom_tile(col='white') +
+      coord_flip() +
+      theme_linedraw(base_size=14) +
+      theme(axis.ticks.x = element_blank(),
+            axis.text.x = element_blank(),
+            axis.title.x = element_blank(),
+            legend.position = 'none') +
+      labs(
+        title = patient,
+        x = 'ATPC Profile feature'
+      ) +
+      facet_wrap(~grp, nrow=1, scales = 'free_x', strip.position = 'bottom')
+  }
+}
+
+plotSelectionsHeatmap <- function(session_df, filename = NA, height = NA, width = NA) {
   trials_df <- getTrialsDataFrame(session_df = session_df)
+  # Define the color range
+  colors <- colorRampPalette(c("gray", "white", "black"))(255)
+
+  # Set breaks for the color scale
+  breaks <- c(1, 4)
   return(
     pheatmap::pheatmap(
       trials_df,
@@ -9,10 +82,15 @@ plotSelectionsHeatmap <- function(session_df) {
       number_format = '%.f',
       fontsize_number = 14,
       legend = F,
-      main = 'selections (n) per feature and trial'
+      main = 'selections (n) per feature and trial',
+      color = colorRampPalette(rev(RColorBrewer::brewer.pal(n = 3, name =
+                                                "RdYlBu")))(3),
+      breaks = c(-1, 0:4),
+      filename = filename,
+      height = height,
+      width = width
       )
   )
-
 }
 
 getTrialsSchedule <- function(session_df, return.list=F) {
