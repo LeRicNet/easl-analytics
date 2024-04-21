@@ -15,24 +15,24 @@
 plotSelectionHeatmapByPatient <- function(patient = NULL, ai_enabled = TRUE) {
   if (is.null(patient) & ai_enabled == TRUE) {
     plist <- lapply(unique(user_responses$currentPatient), function(patient) {
-      bind_rows(user_responses, ai_responses, ai_groundtruth) %>%
-        mutate(grp = ifelse(grepl('AI', sessionID), sessionID, 'User')) %>%
-        filter(currentPatient == patient) %>%
-        select(sessionID,grp, tumor_location:pcf_involvement) %>%
-        melt(id.vars = c('sessionID', 'grp')) %>%
-        ggplot(aes(variable, sessionID, fill=value)) +
-        geom_tile(col='white') +
-        coord_flip() +
-        theme_linedraw(base_size=14) +
-        theme(axis.ticks.x = element_blank(),
+      dplyr::bind_rows(user_responses, ai_responses, ai_groundtruth) %>%
+        dplyr::mutate(grp = ifelse(grepl('AI', sessionID), sessionID, 'User')) %>%
+        dplyr::filter(currentPatient == patient) %>%
+        dplyr::select(sessionID,grp, tumor_location:pcf_involvement) %>%
+        reshape2::melt(id.vars = c('sessionID', 'grp')) %>%
+        ggplot2::ggplot(aes(variable, sessionID, fill=value)) +
+        ggplot2::geom_tile(col='white') +
+        ggplot2::coord_flip() +
+        ggplot2::theme_linedraw(base_size=14) +
+        ggplot2::theme(axis.ticks.x = element_blank(),
               axis.text.x = element_blank(),
               axis.title.x = element_blank(),
               legend.position = 'none') +
-        labs(
+        ggplot2::labs(
           title = patient,
           x = 'ATPC Profile feature'
         ) +
-        facet_wrap(~grp, nrow=1, scales = 'free_x', strip.position = 'bottom')
+        ggplot2::facet_wrap(~grp, nrow=1, scales = 'free_x', strip.position = 'bottom')
     })
 
     ai_enabled <- cowplot::plot_grid(
@@ -45,24 +45,24 @@ plotSelectionHeatmapByPatient <- function(patient = NULL, ai_enabled = TRUE) {
 
     return(cowplot::plot_grid(ai_enabled, ai_disabled, ncol = 1, labels = c('AI enabled', 'AI disabled')))
   } else if (!is.null(patient)) {
-    bind_rows(user_responses, ai_responses, ai_groundtruth) %>%
-      mutate(grp = ifelse(grepl('AI', sessionID), sessionID, 'User')) %>%
-      filter(currentPatient == patient) %>%
-      select(sessionID, grp, tumor_location:pcf_involvement) %>%
-      melt(id.vars = c('sessionID', 'grp')) %>%
-      ggplot(aes(variable, sessionID, fill=value)) +
-      geom_tile(col='white') +
-      coord_flip() +
-      theme_linedraw(base_size=14) +
-      theme(axis.ticks.x = element_blank(),
+    dplyr::bind_rows(user_responses, ai_responses, ai_groundtruth) %>%
+      dplyr::mutate(grp = ifelse(grepl('AI', sessionID), sessionID, 'User')) %>%
+      dplyr::filter(currentPatient == patient) %>%
+      dplyr::select(sessionID, grp, tumor_location:pcf_involvement) %>%
+      reshape2::melt(id.vars = c('sessionID', 'grp')) %>%
+      ggplot2::ggplot(ggplot2::aes(variable, sessionID, fill=value)) +
+      ggplot2::geom_tile(col='white') +
+      ggplot2::coord_flip() +
+      ggplot2::theme_linedraw(base_size=14) +
+      ggplot2::theme(axis.ticks.x = element_blank(),
             axis.text.x = element_blank(),
             axis.title.x = element_blank(),
             legend.position = 'none') +
-      labs(
+      ggplot2::labs(
         title = patient,
         x = 'ATPC Profile feature'
       ) +
-      facet_wrap(~grp, nrow=1, scales = 'free_x', strip.position = 'bottom')
+      ggplot2::facet_wrap(~grp, nrow=1, scales = 'free_x', strip.position = 'bottom')
   }
 }
 
