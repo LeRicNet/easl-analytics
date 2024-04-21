@@ -4,7 +4,7 @@ plotSessionBarcode <- function(session_df = sessions[[1]]) {
       tidyr::drop_na() %>%
       ggplot2::ggplot(ggplot2::aes(timestamp, eventCategory, fill=eventCategory)) +
       ggplot2::geom_tile() +
-      ggplot2::theme_bw(base_size=22) +
+      ggplot2::theme_bw(base_size=18) +
       ggplot2::theme(
         axis.text.x = ggplot2::element_blank(),
         axis.ticks.x = ggplot2::element_blank(),
@@ -43,7 +43,7 @@ plotTrialDurationPerUser <- function(sessions, return.data=FALSE) {
       ggplot2::geom_boxplot(alpha=0.2) +
       ggplot2::geom_point(ggplot2::aes(col=session_start), alpha=0.2) +
       ggplot2::geom_smooth(ggplot2::aes(col=session_start, group=session_start), method='lm', se = F) +
-      ggplot2::theme_linedraw(base_size = 18) +
+      ggplot2::theme_linedraw(base_size = 22) +
       ggplot2::theme(legend.position = 'none') +
       ggplot2::labs(
         x = 'trial',
@@ -63,7 +63,7 @@ plotNumeracyOverview <- function(sessions) {
       # ggplot2::geom_line(aes(group=id, col=id)) +
       ggplot2::ylim(c(0,6)) +
       ggplot2::xlab('subjective numeracy score') +
-      ggplot2::theme_linedraw(base_size=18) +
+      ggplot2::theme_linedraw(base_size=22) +
       ggplot2::theme(legend.position = 'none')
   )
 }
