@@ -20,13 +20,13 @@ plotSelectionHeatmapByPatient <- function(patient = NULL, ai_enabled = TRUE) {
         dplyr::filter(currentPatient == patient) %>%
         dplyr::select(sessionID,grp, tumor_location:pcf_involvement) %>%
         reshape2::melt(id.vars = c('sessionID', 'grp')) %>%
-        ggplot2::ggplot(aes(variable, sessionID, fill=value)) +
+        ggplot2::ggplot(ggplot2::aes(variable, sessionID, fill=value)) +
         ggplot2::geom_tile(col='white') +
         ggplot2::coord_flip() +
         ggplot2::theme_linedraw(base_size=14) +
-        ggplot2::theme(axis.ticks.x = element_blank(),
-              axis.text.x = element_blank(),
-              axis.title.x = element_blank(),
+        ggplot2::theme(axis.ticks.x = ggplot2::element_blank(),
+              axis.text.x = ggplot2::element_blank(),
+              axis.title.x = ggplot2::element_blank(),
               legend.position = 'none') +
         ggplot2::labs(
           title = patient,
@@ -54,9 +54,9 @@ plotSelectionHeatmapByPatient <- function(patient = NULL, ai_enabled = TRUE) {
       ggplot2::geom_tile(col='white') +
       ggplot2::coord_flip() +
       ggplot2::theme_linedraw(base_size=14) +
-      ggplot2::theme(axis.ticks.x = element_blank(),
-            axis.text.x = element_blank(),
-            axis.title.x = element_blank(),
+      ggplot2::theme(axis.ticks.x = ggplot2::element_blank(),
+            axis.text.x = ggplot2::element_blank(),
+            axis.title.x = ggplot2::element_blank(),
             legend.position = 'none') +
       ggplot2::labs(
         title = patient,
