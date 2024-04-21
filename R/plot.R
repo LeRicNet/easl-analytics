@@ -20,7 +20,7 @@ plotTrialDurationPerUser <- function(sessions, return.data=FALSE) {
       unique() %>%
       dplyr::mutate(duration_sec = end_time - start_time,
                     duration_min = duration_sec / 60)
-    template <- tibble(
+    template <- tibble::tibble(
       sessionID = unique(.df$session),
       session_start = session$timestamp[1],
       trial_completed = paste0('trial_', 1:10, '_end'),
@@ -36,16 +36,16 @@ plotTrialDurationPerUser <- function(sessions, return.data=FALSE) {
    return(.df)
   } else {
     .df %>%
-      group_by(session_start) %>%
-      mutate(trial_completed = factor(sapply(strsplit(trial_completed, '_'), '[', 2), levels=c(1:10))) %>%
-      mutate(duration_min = duration_sec / 60) %>%
-      ggplot(aes(trial_completed, duration_min)) +
-      geom_boxplot(alpha=0.2) +
-      geom_point(aes(col=session_start), alpha=0.2) +
-      geom_smooth(aes(col=session_start, group=session_start), method='lm', se = F) +
-      theme_linedraw(base_size = 18) +
-      theme(legend.position = 'none') +
-      labs(
+      dplyr::group_by(session_start) %>%
+      dplyr::mutate(trial_completed = factor(sapply(strsplit(trial_completed, '_'), '[', 2), levels=c(1:10))) %>%
+      dplyr::mutate(duration_min = duration_sec / 60) %>%
+      ggplot2::ggplot(ggplot2::aes(trial_completed, duration_min)) +
+      ggplot2::geom_boxplot(alpha=0.2) +
+      ggplot2::geom_point(ggplot2::aes(col=session_start), alpha=0.2) +
+      ggplot2::geom_smooth(ggplot2::aes(col=session_start, group=session_start), method='lm', se = F) +
+      ggplot2::theme_linedraw(base_size = 18) +
+      ggplot2::theme(legend.position = 'none') +
+      ggplot2::labs(
         x = 'trial',
         y = 'duration (min)'
       )
