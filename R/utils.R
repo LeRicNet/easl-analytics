@@ -8,12 +8,12 @@ get_study_administration_data <- function(session_df) {
 calculateNumeracy <- function(session_df) {
   .sns_df <- session_df %>%
     dplyr::filter(eventCategory == 'SNS') %>%
-    mutate(
+    dplyr::mutate(
       question = sapply(strsplit(sapply(strsplit(eventName, '_'), '[', 2), '-'), '[', 1),
       value = as.numeric(sapply(strsplit(eventName, '-'), '[', 2))
     )
   .sns_df$value[7] = 6 - .sns_df$value[7]
-  return(tibble(
+  return(tibble::tibble(
     session = .sns_df$session,
     overall = mean(.sns_df$value),
     ability = mean(.sns_df$value[1:4]),

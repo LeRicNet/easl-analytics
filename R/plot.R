@@ -57,7 +57,7 @@ plotNumeracyOverview <- function(sessions) {
     dplyr::bind_rows(lapply(sessions, calculateNumeracy)) %>%
       dplyr::mutate(id=factor(1:nrow(.))) %>%
       reshape2::melt(id.vars = c('session', 'id')) %>%
-      ggplot2::ggplot(aes(variable, value)) +
+      ggplot2::ggplot(ggplot2::aes(variable, value)) +
       ggplot2::geom_boxplot() +
       # ggplot2::geom_point(aes(col=id), size=5) +
       # ggplot2::geom_line(aes(group=id, col=id)) +
