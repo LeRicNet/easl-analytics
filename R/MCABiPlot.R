@@ -12,14 +12,18 @@ MCABiPlot <- function() {
     'Dim1' = ind_coords[,1],
     'Dim2' = ind_coords[,2],
     'category' = meta$subspecialty,
-    'color' = colors[color_index]
+    'color' = colors[color_index],
+    'size' = 20,
+    'symbol' = 'circle'
   )
 
   var_formatted <- data.frame(
     'Dim1' = var_coords[,1],
     'Dim2' = var_coords[,2],
     'category' = rownames(var_coords),
-    'color' = rgb(1,0,0,0.8)
+    'color' = rgb(1,0,0,0.8),
+    'size' = 14,
+    'symbol' = 'square'
   )
 
   return(rbind(ind_formatted, var_formatted))
