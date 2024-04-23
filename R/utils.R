@@ -5,7 +5,7 @@ get_study_administration_data <- function(session_df) {
   )
 }
 
-calculateNumeracy <- function(session_df) {
+calculateNumeracy <- function(session_df, summarize = TRUE) {
   .sns_df <- session_df %>%
     dplyr::filter(eventCategory == 'SNS') %>%
     dplyr::mutate(
@@ -13,12 +13,34 @@ calculateNumeracy <- function(session_df) {
       value = as.numeric(sapply(strsplit(eventName, '-'), '[', 2))
     )
   .sns_df$value[7] = 6 - .sns_df$value[7]
-  return(tibble::tibble(
-    session = .sns_df$session,
-    overall = mean(.sns_df$value),
-    ability = mean(.sns_df$value[1:4]),
-    preference = mean(.sns_df$value[5:8])
-  ))
+  if (summarize) {
+    return(tibble::tibble(
+      session = .sns_df$session,
+      overall = mean(.sns_df$value),
+      ability = mean(.sns_df$value[1:4]),
+      preference = mean(.sns_df$value[5:8])
+    ))
+  } else {
+    return(.sns_df)
+  }
+}
+
+calculateUsability <- function(session_df, summarize = TRUE) {
+  .sus_df <- session_df %>%
+    dplyr::filter(eventCategory == 'SUS') %>%
+    dplyr::mutate(
+      question = sapply(strsplit(sapply(strsplit(eventName, '_'), '[', 2), '-'), '[', 1),
+      value = as.numeric(sapply(strsplit(eventName, '-'), '[', 2))
+    )
+  .sus_df$value[c(1,3,5,7,9)] = 5 - .sus_df$value[c(1,3,5,7,9)]
+  if (summarize) {
+    return(tibble::tibble(
+      session = .sus_df$session,
+      overall = sum(.sus_df$value) * 2.5
+    ))
+  } else {
+    return(.sus_df)
+  }
 }
 
 extractConfidenceDifficulty <- function(sessions) {

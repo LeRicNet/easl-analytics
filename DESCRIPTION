@@ -12,6 +12,7 @@ Imports:
     cowplot,
     dplyr,
     ggplot2,
+    grDevices,
     jsonlite,
     magrittr,
     pheatmap,
