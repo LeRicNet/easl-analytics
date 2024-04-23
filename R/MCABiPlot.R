@@ -9,7 +9,7 @@ MCABiPlot <- function() {
   return(
     data.frame(
       'Dim1' = coords[,1],
-      'Dim2' = coords[,1],
+      'Dim2' = coords[,2],
       'category' = meta$subspecialty,
       'color' = colors[color_index]
     )
