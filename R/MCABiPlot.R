@@ -26,5 +26,9 @@ MCABiPlot <- function() {
     'symbol' = 'square'
   )
 
-  return(rbind(ind_formatted, var_formatted))
+  formatted <- rbind(ind_formatted, var_formatted)
+  dups <- duplicated(formatted[,c(1,2)])
+  formatted[dups, 1] <- jitter(formatted[dups, 1])
+  formatted[dups, 2] <- jitter(formatted[dups, 2])
+  return(formatted)
 }
