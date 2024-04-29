@@ -43,5 +43,6 @@ MCABiPlot <- function() {
   dups <- duplicated(formatted[,c(1,2)])
   formatted[dups, 1] <- jitter(formatted[dups, 1], factor = 100)
   formatted[dups, 2] <- jitter(formatted[dups, 2], factor = 100)
+  formatted$name <- sapply(strsplit(rownames(formatted), "-"), "[", 1)
   return(formatted)
 }
