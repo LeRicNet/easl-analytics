@@ -35,7 +35,7 @@ MCABiPlot <- function() {
   formatted[grepl('^ACP', rownames(formatted)),]$color <- rgb(117,112,179,255, maxColorValue = 255)
 
   dups <- duplicated(formatted[,c(1,2)])
-  formatted[dups, 1] <- jitter(formatted[dups, 1], factor = 30)
-  formatted[dups, 2] <- jitter(formatted[dups, 2], factor = 30)
+  formatted[dups, 1] <- jitter(formatted[dups, 1], factor = 100)
+  formatted[dups, 2] <- jitter(formatted[dups, 2], factor = 100)
   return(formatted)
 }
