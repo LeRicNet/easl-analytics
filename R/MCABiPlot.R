@@ -35,8 +35,10 @@ MCABiPlot <- function() {
   formatted[grepl('^ACP', rownames(formatted)),]$color <- rgb(117,112,179,255, maxColorValue = 255)
   formatted[grepl('^AI-', rownames(formatted)),]$symbol <- 'star'
   formatted[grepl('^AI-', rownames(formatted)),]$size <- 30
+  formatted[grepl('^AI-', rownames(formatted)),]$color <- rgb(99,99,99,255, maxColorValue = 255)
   formatted[grepl('Ground Truth', rownames(formatted)),]$symbol <- 'hexagon'
   formatted[grepl('Ground Truth', rownames(formatted)),]$size <- 30
+  formatted[grepl('Ground Truth', rownames(formatted)),]$color <- rgb(158,202,225,255, maxColorValue = 255)
 
   dups <- duplicated(formatted[,c(1,2)])
   formatted[dups, 1] <- jitter(formatted[dups, 1], factor = 100)
