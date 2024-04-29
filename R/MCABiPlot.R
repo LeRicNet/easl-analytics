@@ -13,7 +13,7 @@ MCABiPlot <- function() {
     'Dim2' = ind_coords[,2],
     'category' = meta$subspecialty,
     'color' = colors[color_index],
-    'size' = 40,
+    'size' = 30,
     'symbol' = 'circle'
   )
 
@@ -22,7 +22,7 @@ MCABiPlot <- function() {
     'Dim2' = var_coords[,2],
     'category' = rownames(var_coords),
     'color' = rgb(1,0,0,0.8),
-    'size' = 30,
+    'size' = 20,
     'symbol' = 'square'
   )
 
@@ -33,6 +33,10 @@ MCABiPlot <- function() {
   formatted[grepl('sns', rownames(formatted)),]$color <- rgb(217,95,2,255, maxColorValue = 255)
   formatted[grepl('^ACP', rownames(formatted)),]$symbol <- 'diamond-x'
   formatted[grepl('^ACP', rownames(formatted)),]$color <- rgb(117,112,179,255, maxColorValue = 255)
+  formatted[grepl('^AI-', rownames(formatted)),]$symbol <- 'star'
+  formatted[grepl('^AI-', rownames(formatted)),]$size <- 30
+  formatted[grepl('Ground Truth', rownames(formatted)),]$symbol <- 'star-dot'
+  formatted[grepl('Ground Truth', rownames(formatted)),]$size <- 30
 
   dups <- duplicated(formatted[,c(1,2)])
   formatted[dups, 1] <- jitter(formatted[dups, 1], factor = 100)
