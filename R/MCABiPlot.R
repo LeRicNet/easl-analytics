@@ -28,7 +28,7 @@ MCABiPlot <- function() {
 
   formatted <- rbind(ind_formatted, var_formatted)
   formatted[grepl('sus', rownames(formatted)),]$symbol <- 'x-dot'
-  formatted[grepl('sus', rownames(formatted)),]$color <- rgb(27,158,119,0.8, maxColorValue = 255)
+  formatted[grepl('sus', rownames(formatted)),]$color <- rgb(27,158,119,0.8*255, maxColorValue = 255)
   formatted[grepl('sns', rownames(formatted)),]$symbol <- 'cross-dot'
   formatted[grepl('sns', rownames(formatted)),]$color <- rgb(217,95,2,0.8, maxColorValue = 255)
   formatted[grepl('^ACP', rownames(formatted)),]$symbol <- 'diamond-x'
