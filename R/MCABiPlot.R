@@ -45,12 +45,18 @@ MCABiPlot <- function() {
   formatted <- formatted[!grepl('ability', formatted$category),]
   formatted <- formatted[!grepl('preference', formatted$category),]
 
+  formatted[grepl('sus', rownames(formatted)),]$name <- 'SUS'
   formatted[grepl('sus', rownames(formatted)),]$symbol <- 'x-dot'
   formatted[grepl('sus', rownames(formatted)),]$color <- rgb(27,158,119,255, maxColorValue = 255)
+  formatted[grepl('sns', rownames(formatted)),]$name <- 'SNS'
   formatted[grepl('sns', rownames(formatted)),]$symbol <- 'cross-dot'
   formatted[grepl('sns', rownames(formatted)),]$color <- rgb(217,95,2,255, maxColorValue = 255)
   formatted[grepl('^ACP', rownames(formatted)),]$symbol <- 'diamond-x'
   formatted[grepl('^ACP', rownames(formatted)),]$color <- rgb(117,112,179,255, maxColorValue = 255)
+
+  formatted[formatted$name %in% c('NSUR', 'NRAD', 'F', 'M'),]$symbol <- 'circle'
+  formatted[formatted$name %in% c('F', 'M'),]$color <- '#636363'
+  formatted[formatted$name %in% c('NSUR', 'NRAD'),]$color <- '#c51b8a'
 
 
   dups <- duplicated(formatted[,c(1,2)])
