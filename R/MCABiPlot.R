@@ -36,14 +36,15 @@ MCABiPlot <- function() {
   formatted[grepl('Ground Truth', rownames(formatted)),]$symbol <- 'hexagon'
   formatted[grepl('Ground Truth', rownames(formatted)),]$size <- 30
   formatted[grepl('Ground Truth', rownames(formatted)),]$color <- rgb(158,202,225,255, maxColorValue = 255)
-  formatted <- formatted %>%
-    filter(!grepl('.NA$', category)) %>%
-    filter(!grepl('^20', category)) %>%
-    filter(!grepl('TRUE', category)) %>%
-    filter(!grepl('FALSE', category)) %>%
-    filter(!grepl('overall', category)) %>%
-    filter(!grepl('ability', category)) %>%
-    filter(!grepl('preference', category))
+
+  formatted <- formatted[!grepl('.NA$', formatted$category),]
+  formatted <- formatted[!grepl('^20', formatted$category),]
+  formatted <- formatted[!grepl('TRUE', formatted$category),]
+  formatted <- formatted[!grepl('FALSE', formatted$category),]
+  formatted <- formatted[!grepl('overall', formatted$category),]
+  formatted <- formatted[!grepl('ability', formatted$category),]
+  formatted <- formatted[!grepl('preference', formatted$category),]
+
   formatted[grepl('sus', rownames(formatted)),]$symbol <- 'x-dot'
   formatted[grepl('sus', rownames(formatted)),]$color <- rgb(27,158,119,255, maxColorValue = 255)
   formatted[grepl('sns', rownames(formatted)),]$symbol <- 'cross-dot'
