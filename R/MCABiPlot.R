@@ -27,18 +27,30 @@ MCABiPlot <- function() {
   )
 
   formatted <- rbind(ind_formatted, var_formatted)
+  formatted$category <- as.character(formatted$category)
+  formatted[grepl('^AI-', rownames(formatted)),]$category <- 'AI'
+  formatted[grepl('^AI-', rownames(formatted)),]$symbol <- 'star'
+  formatted[grepl('^AI-', rownames(formatted)),]$size <- 30
+  formatted[grepl('^AI-', rownames(formatted)),]$color <- rgb(99,99,99,255, maxColorValue = 255)
+  formatted[grepl('Ground Truth', rownames(formatted)),]$category <- 'AI-Ground Truth'
+  formatted[grepl('Ground Truth', rownames(formatted)),]$symbol <- 'hexagon'
+  formatted[grepl('Ground Truth', rownames(formatted)),]$size <- 30
+  formatted[grepl('Ground Truth', rownames(formatted)),]$color <- rgb(158,202,225,255, maxColorValue = 255)
+  formatted <- formatted %>%
+    filter(!grepl('.NA$', category)) %>%
+    filter(!grepl('^20', category)) %>%
+    filter(!grepl('TRUE', category)) %>%
+    filter(!grepl('FALSE', category)) %>%
+    filter(!grepl('overall', category)) %>%
+    filter(!grepl('ability', category)) %>%
+    filter(!grepl('preference', category))
   formatted[grepl('sus', rownames(formatted)),]$symbol <- 'x-dot'
   formatted[grepl('sus', rownames(formatted)),]$color <- rgb(27,158,119,255, maxColorValue = 255)
   formatted[grepl('sns', rownames(formatted)),]$symbol <- 'cross-dot'
   formatted[grepl('sns', rownames(formatted)),]$color <- rgb(217,95,2,255, maxColorValue = 255)
   formatted[grepl('^ACP', rownames(formatted)),]$symbol <- 'diamond-x'
   formatted[grepl('^ACP', rownames(formatted)),]$color <- rgb(117,112,179,255, maxColorValue = 255)
-  formatted[grepl('^AI-', rownames(formatted)),]$symbol <- 'star'
-  formatted[grepl('^AI-', rownames(formatted)),]$size <- 30
-  formatted[grepl('^AI-', rownames(formatted)),]$color <- rgb(99,99,99,255, maxColorValue = 255)
-  formatted[grepl('Ground Truth', rownames(formatted)),]$symbol <- 'hexagon'
-  formatted[grepl('Ground Truth', rownames(formatted)),]$size <- 30
-  formatted[grepl('Ground Truth', rownames(formatted)),]$color <- rgb(158,202,225,255, maxColorValue = 255)
+
 
   dups <- duplicated(formatted[,c(1,2)])
   formatted[dups, 1] <- jitter(formatted[dups, 1], factor = 100)
