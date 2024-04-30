@@ -54,9 +54,9 @@ MCABiPlot <- function() {
   formatted[grepl('^ACP', rownames(formatted)),]$symbol <- 'diamond-x'
   formatted[grepl('^ACP', rownames(formatted)),]$color <- rgb(117,112,179,255, maxColorValue = 255)
 
-  formatted[formatted$name %in% c('NSUR', 'NRAD', 'F', 'M'),]$symbol <- 'circle'
-  formatted[formatted$name %in% c('F', 'M'),]$color <- '#636363'
-  formatted[formatted$name %in% c('NSUR', 'NRAD'),]$color <- '#c51b8a'
+  formatted[formatted$category %in% c('NSUR', 'NRAD', 'F', 'M'),]$symbol <- 'circle'
+  formatted[formatted$category %in% c('F', 'M'),]$color <- '#636363'
+  formatted[formatted$category %in% c('NSUR', 'NRAD'),]$color <- '#c51b8a'
 
 
   dups <- duplicated(formatted[,c(1,2)])
